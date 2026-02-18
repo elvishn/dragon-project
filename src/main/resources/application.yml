@@ -19,3 +19,9 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+
+dragons:
+  hunger:
+   fixed-rate: 60000
+  age:
+    fixed-rate: 300000
