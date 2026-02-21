@@ -18,7 +18,7 @@ public class ForestDragon extends Dragon{
     // for database
     public ForestDragon(String id, String name, int age, int health,
                       int weight, int hunger, int power) {
-        super(id, name, SpecialAbility.PoisonLevel ,DragonType.ICE, age, health, weight, hunger, power);
+        super(id, name, SpecialAbility.PoisonLevel ,DragonType.FOREST, age, health, weight, hunger, power);
     }
 
     @Override

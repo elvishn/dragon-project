@@ -18,6 +18,7 @@ public class DragonDto {
     public String type;
     public int age;
     public int health;
+    public int weight;
     public int hunger;
     public int power;
 
@@ -27,10 +28,11 @@ public class DragonDto {
         String type = dragon.getType().name();
         int age = dragon.getAge();
         int health = dragon.getHealth();
+        int weight = dragon.getWeight();
         int hunger = dragon.getHunger();
         int power = dragon.getPower();
         String peculiarities = dragon.getPeculiarities().name();
-        DragonDto data = new DragonDto(id, name, peculiarities, type, age, health, hunger, power);
+        DragonDto data = new DragonDto(id, name, peculiarities, type, age, health, weight, hunger, power);
         return data;
     }
 }
