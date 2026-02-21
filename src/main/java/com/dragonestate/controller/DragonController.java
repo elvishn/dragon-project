@@ -1,19 +1,15 @@
 package com.dragonestate.controller;
 
 import com.dragonestate.dto.DragonDto;
-import com.dragonestate.dto.DragonResponseDto;
+import com.dragonestate.dto.DragonRequestDto;
 import com.dragonestate.dto.IdDto;
-import com.dragonestate.model.Dragon;
 import com.dragonestate.service.DragonService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,7 +34,7 @@ public class DragonController {
     }
 
     @PostMapping
-    public ResponseEntity<Optional<DragonDto>> createDragon(@RequestBody DragonResponseDto dragon) {
+    public ResponseEntity<Optional<DragonDto>> createDragon(@RequestBody DragonRequestDto dragon) {
         return new ResponseEntity<>(service.createDragon(dragon), HttpStatus.CREATED);
     }
 

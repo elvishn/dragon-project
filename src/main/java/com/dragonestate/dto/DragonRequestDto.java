@@ -1,10 +1,14 @@
 package com.dragonestate.dto;
 
 import com.dragonestate.model.DragonType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class DragonResponseDto {
+@AllArgsConstructor
+public class DragonRequestDto {
     private String name;
     private DragonType type;
+
+
 }

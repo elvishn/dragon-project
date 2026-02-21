@@ -1,6 +1,7 @@
 package com.dragonestate.controller;
 
 import com.dragonestate.dto.DragonDto;
+import com.dragonestate.dto.DragonRequestDto;
 import com.dragonestate.model.*;
 import com.dragonestate.repository.DragonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,12 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Arrays;
 
+import static com.dragonestate.model.DragonType.FOREST;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,6 +33,28 @@ public class DragonControllerTest {
     private DragonRepository repository;
     @Autowired
     private MockMvc mockMvc;
+
+    @Test
+    @Sql(statements = "DELETE FROM dragons", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void givenDragon_whenAdd_thenStatus201andDragonReturned() throws Exception {
+        DragonRequestDto dragon = new DragonRequestDto("Belka", FOREST);
+
+        mockMvc.perform(
+                post("/api/dragons")
+                .content(objectMapper.writeValueAsString(dragon))
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isString())
+                .andExpect(jsonPath("$.name").value("Belka"))
+                .andExpect(jsonPath("$.peculiarities").value("PoisonLevel"))
+                .andExpect(jsonPath("$.type").value("FOREST"))
+                .andExpect(jsonPath("$.age").isNumber())
+                .andExpect(jsonPath("$.health").isNumber())
+                .andExpect(jsonPath("$.weight").isNumber())
+                .andExpect(jsonPath("$.hunger").isNumber())
+                .andExpect(jsonPath("$.power").isNumber());
+    }
 
     @Test
     @Sql(statements = "DELETE FROM dragons", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
