@@ -2,6 +2,7 @@ package com.dragonestate.controller;
 
 import com.dragonestate.dto.DragonDto;
 import com.dragonestate.dto.DragonRequestDto;
+import com.dragonestate.dto.IdDto;
 import com.dragonestate.model.*;
 import com.dragonestate.repository.DragonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.Arrays;
-
+import static org.hamcrest.Matchers.*;
 import static com.dragonestate.model.DragonType.FOREST;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -33,6 +34,45 @@ public class DragonControllerTest {
     private DragonRepository repository;
     @Autowired
     private MockMvc mockMvc;
+
+    @Test
+    public void givenDragons_whenGetExists_thenStatus200_doubleResult() throws Exception {
+        Dragon fire = createTestDragon("Twinkle", DragonType.valueOf("FIRE"));
+        Dragon ice = createTestDragon("Ledik", DragonType.valueOf("ICE"));
+
+        mockMvc.perform(
+                get("/api/dragons/stats/average-power"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNumber());
+
+    }
+
+    @Test
+    public void givenDragon_whenTrain_thenStatus200andDragonReturned() throws Exception {
+        Dragon fire = createTestDragon("Twinkle", DragonType.valueOf("FIRE"));
+        final int nowPower = fire.getPower();
+        final int nowHunger = fire.getHunger();
+        IdDto id = new IdDto(fire.getId());
+
+        mockMvc.perform(
+                post("/api/dragons/train")
+                        .content(objectMapper.writeValueAsString(id))
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.hunger").value(
+                        anyOf(
+                                is(100),
+                                is(nowHunger + 5)
+                        )
+                ))
+                .andExpect(jsonPath("$.power").value(
+                        anyOf(
+                                is(100),
+                                is(nowPower + 5)
+                        )
+                ));
+    }
 
     @Test
     @Sql(statements = "DELETE FROM dragons", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
