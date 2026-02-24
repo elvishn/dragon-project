@@ -3,7 +3,7 @@ package com.dragonestate.service;
 import com.dragonestate.activaty.Feeding;
 import com.dragonestate.activaty.Training;
 import com.dragonestate.dto.DragonDto;
-import com.dragonestate.dto.DragonResponseDto;
+import com.dragonestate.dto.DragonRequestDto;
 import com.dragonestate.model.*;
 import com.dragonestate.repository.InMemoryDragonRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class DragonService {
         return DragonDto.fromEntity(dragon);
     }
 
-    public Optional<DragonDto> createDragon(DragonResponseDto request) {
+    public Optional<DragonDto> createDragon(DragonRequestDto request) {
         if (request.getType() == DragonType.FIRE) {
             FireDragon fire = new FireDragon(request.getName());
             repository.save(fire);

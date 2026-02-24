@@ -9,9 +9,9 @@ public class Training implements Activaty{
         if (dragon.getPower() <= 95) {
             new_power = dragon.getPower() + 5;
         } else {new_power = 100;}
-        if (dragon.getHunger() >= 5) {
-            new_hungry = dragon.getHunger() - 5;
-        } else {new_hungry = 0;}
+        if (dragon.getHunger() <= 100) {
+            new_hungry = dragon.getHunger() + 5;
+        } else {new_hungry = 100;}
         dragon.setPower(new_power);
         dragon.setHunger(new_hungry);
         System.out.println("The dragon became stronger by 5 units, but its very hunger!");
