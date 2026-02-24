@@ -10,7 +10,7 @@ public class Feeding implements Activaty{
             new_hunger = dragon.getHunger() - 5;
         } else {new_hunger = 0;}
         if (dragon.getHealth() <= 95) {
-            new_health = dragon.getHealth() + 5;
+            new_health = dragon.getHealth() + 1;
         } else {new_health = 100;}
         dragon.setHunger(new_hunger);
         dragon.setHealth(new_health);

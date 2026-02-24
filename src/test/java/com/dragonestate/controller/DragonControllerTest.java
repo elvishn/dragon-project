@@ -48,6 +48,33 @@ public class DragonControllerTest {
     }
 
     @Test
+    public void givenDragon_whenFeed_thenStatus200andDragonReturned() throws Exception {
+        Dragon fire = createTestDragon("Twinkle", DragonType.valueOf("FIRE"));
+        final int nowHealth = fire.getHealth();
+        final int nowHunger = fire.getHunger();
+        IdDto id = new IdDto(fire.getId());
+
+        mockMvc.perform(
+                        post("/api/dragons/train")
+                                .content(objectMapper.writeValueAsString(id))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.hunger").value(
+                        anyOf(
+                                is(0),
+                                is(nowHunger - 5)
+                        )
+                ))
+                .andExpect(jsonPath("$.health").value(
+                        anyOf(
+                                is(100),
+                                is(nowHealth + 1)
+                        )
+                ));
+    }
+
+    @Test
     public void givenDragon_whenTrain_thenStatus200andDragonReturned() throws Exception {
         Dragon fire = createTestDragon("Twinkle", DragonType.valueOf("FIRE"));
         final int nowPower = fire.getPower();
